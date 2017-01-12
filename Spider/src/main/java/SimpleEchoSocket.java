@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -35,15 +36,7 @@ public class SimpleEchoSocket implements WebSocketListener{
 			e.printStackTrace();
 		}
 		
-		String message2 = "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"global\"},\"cid\":2}";
-		try {
-			session.getRemote().sendString(message2);
-		System.out.println("$$$$$ "+session.suspend().toString());
 		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		System.out.println("@@@@@@@@");
 	}
 
@@ -64,6 +57,23 @@ public class SimpleEchoSocket implements WebSocketListener{
 					e.printStackTrace();
 				}
 			}
+		else if(arg0.startsWith("{\"rid\":1,\"")){
+			System.out.println(arg0);
+			String message2 = "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"global\"},\"cid\":2}";
+			try {
+				session.getRemote().sendString(message2);
+			System.out.println(message2);
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			Data data = new Data();
+			data.data = arg0;
+			data.time =  new Timestamp(System.currentTimeMillis());
+			DBServer.save("data_basic_nor", data);
+		}
 		
 	}
 	
