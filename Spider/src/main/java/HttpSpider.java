@@ -4,6 +4,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -19,17 +21,19 @@ public class HttpSpider{
 		CloseableHttpResponse response = httpClient.execute(get);
 		HttpEntity entity = response.getEntity();
 		String result = EntityUtils.toString(entity);
-		//System.out.println(result);
+		System.out.println("get data1 "+result.length());
 		return result;
 	}
 	
 	public static String getData2() throws ClientProtocolException, IOException{
+		System.out.println("####### hahahahahah");
 		CloseableHttpClient httpClient = HttpClients.createDefault();
+		//HttpClientParams.setCookiePolicy(httpClient.getParams(), CookiePolicy.BROWSER_COMPATIBILITY); 
 		HttpGet get = new HttpGet(url2);
 		CloseableHttpResponse response = httpClient.execute(get);
 		HttpEntity entity = response.getEntity();
 		String result = EntityUtils.toString(entity);
-		//System.out.println(result);
+		System.out.println("get data2 "+result.length());
 		return result;
 	}
 }

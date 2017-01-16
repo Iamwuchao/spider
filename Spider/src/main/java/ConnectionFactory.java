@@ -4,12 +4,12 @@ import java.sql.SQLException;
 
 
 public class ConnectionFactory {
-	private final static String url = "jdbc:mysql://127.0.0.1:3306/sc?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+	private final static String url = "jdbc:mysql://114.215.108.198:3306/sc?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false";
 	
 	private final static String dbDriver="com.mysql.cj.jdbc.Driver";   
 	
-	private static String dbUser="root";  
-	private static String dbPass="21424019"; 
+	private static String dbUser="zerg";  
+	private static String dbPass="Dlut-2016sc&yz"; 
 	
 	
 	

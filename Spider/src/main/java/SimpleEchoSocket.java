@@ -19,6 +19,7 @@ public class SimpleEchoSocket implements WebSocketListener{
 	public void onWebSocketClose(int arg0, String arg1) {
 		// TODO Auto-generated method stub
 		System.out.println("#####   closed  #######");
+		Main.socketClose=true;
 		
 	}
 
@@ -35,9 +36,6 @@ public class SimpleEchoSocket implements WebSocketListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		System.out.println("@@@@@@@@");
 	}
 
 	public void onWebSocketError(Throwable arg0) {
@@ -47,28 +45,28 @@ public class SimpleEchoSocket implements WebSocketListener{
 
 	public void onWebSocketText(String arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("### message  : "+arg0);
+	//	System.out.println("### message  : "+arg0);
 		if(arg0.equals("#1")){
 				try {
 					this.session.getRemote().sendString("#2");
-					System.out.println("send #2");
+				//	System.out.println("send #2");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		else if(arg0.startsWith("{\"rid\":1,\"")){
-			System.out.println(arg0);
+		//	System.out.println(arg0);
 			String message2 = "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"global\"},\"cid\":2}";
 			try {
 				session.getRemote().sendString(message2);
-			System.out.println(message2);
+			//System.out.println(message2);
 			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else{
+		}else if(!arg0.startsWith("{\"rid\"")){
 			Data data = new Data();
 			data.data = arg0;
 			data.time =  new Timestamp(System.currentTimeMillis());
