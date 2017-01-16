@@ -45,7 +45,7 @@ public class SimpleEchoSocket implements WebSocketListener{
 
 	public void onWebSocketText(String arg0) {
 		// TODO Auto-generated method stub
-	//	System.out.println("### message  : "+arg0);
+		System.out.println("### message  : "+arg0);
 		if(arg0.equals("#1")){
 				try {
 					this.session.getRemote().sendString("#2");
@@ -60,7 +60,7 @@ public class SimpleEchoSocket implements WebSocketListener{
 			String message2 = "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"global\"},\"cid\":2}";
 			try {
 				session.getRemote().sendString(message2);
-			//System.out.println(message2);
+			System.out.println(message2);
 			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

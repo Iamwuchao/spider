@@ -14,27 +14,25 @@ public class Main {
 	private static final String kabTable= "data_basic_kab";
 	private static final String norTable = "data_basic_nor";
 	static volatile boolean socketClose ;
-	static WebSocketClient client;
-	static SimpleEchoSocket socket;
+	static final int SIZE = 1;
+	static WebSocketClient[] clients = new  WebSocketClient[SIZE];
+	static SimpleEchoSocket[] sockets = new  SimpleEchoSocket[SIZE];
 	public static void startSocket(){
-		 client = new WebSocketClient();
-		socket = new SimpleEchoSocket();
-		try {
-			client.start();
-			URI echoUri = new URI(WS_URL);
-			//ClientUpgradeRequest request = new ClientUpgradeRequest();
-			//request.setHeader("Cookie", "__cfduid=df1be9d35647d347d9757aa8ee99a2f3f1478744220; _gat=1; _ga=GA1.2.1728105108.1478744297");
-			client.connect(socket, echoUri);
-			
-			System.out.println("connect to "+WS_URL);
-			
-			//HttpSpider hs = new HttpSpider();
-		//	hs.getData1();
-		//	hs.getData2();
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(int i=0;i<SIZE;i++){
+			 clients[i] = new WebSocketClient();
+				sockets[i] = new SimpleEchoSocket();
+				try {
+					clients[i].start();
+					URI echoUri = new URI(WS_URL);
+					
+					clients[i].connect(sockets[i], echoUri);
+					
+					System.out.println("connect to "+WS_URL);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	public static void main(String[] args) {
@@ -98,7 +96,7 @@ public class Main {
 				Timestamp nowTime = new Timestamp(System.currentTimeMillis());
 				data.time = nowTime;
 				DBServer.save(firTable, data);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
