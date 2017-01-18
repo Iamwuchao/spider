@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class DBServer {
-	private static ScheduledExecutorService scheduledThreadPool1	= Executors.newScheduledThreadPool(20);
+	private static ScheduledExecutorService scheduledThreadPool1	= Executors.newScheduledThreadPool(40);
 	
 	private static ScheduledExecutorService scheduledThreadPool2	= Executors.newScheduledThreadPool(10);
 	private static AtomicInteger queueSize = new AtomicInteger(0);
@@ -16,18 +16,27 @@ public class DBServer {
 	private static void mysave(String tableName,Data data){
 		long start = System.currentTimeMillis();
 		String sql = "insert into "+tableName+" "+"(`data`,`time`)"+" "+"values"+" "+"(?,?)";
-		try(Connection connection  = ConnectionFactory.getConnection()) {
+		Connection connection = null;
+		try {
+			connection = ConnectionFactory.getConnection();
 			
 			 PreparedStatement preStatement = connection.prepareStatement(sql);
 			
 			 preStatement.setString(1, data.data);
 			 preStatement.setTimestamp(2, data.time);
 			 preStatement.executeUpdate();
-			 connection.close();
-		} catch (SQLException e) {
+		} catch (SQLException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			if(connection!=null){
+				ConnectionFactory.returnConnection(connection);
+			}
 		}
+		
+		
+			
+		
 		long end = System.currentTimeMillis();
 		System.out.println("usedTime "+(end - data.time.getTime()));
 		System.out.println("times "+(end-start));

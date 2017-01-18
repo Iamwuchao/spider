@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 
 
 public class HttpSpider{
-	private static String url1 = "https://cybermap.kaspersky.com/assets/data/events/7.json";
+	private static String url1 = "https://cybermap.kaspersky.com/assets/data/events/8.json";
 	private static String url2 = "https://www.fireeye.com/content/dam/legacy/cyber-map/weekly_sanitized.min.js";
 	
 	public static String getData1() throws ClientProtocolException, IOException{

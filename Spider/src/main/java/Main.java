@@ -41,17 +41,19 @@ public class Main {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		 startSocket();
-		 socketClose=false;
-		 /*HttpWorkka ka = new HttpWorkka();
-		 new Thread(ka).start();
+		
+		 //HttpWorkka ka = new HttpWorkka();
+		 //new Thread(ka).start();
+		 
 			//ScheduledExecutorService scheduledThreadPool1	= Executors.newScheduledThreadPool(1);
 			
 			//scheduledThreadPool1.scheduleAtFixedRate(new HttpWorkka(), 0,600,TimeUnit.SECONDS);
 			
-			//ScheduledExecutorService scheduledThreadPool2	= Executors.newScheduledThreadPool(1);
+			ScheduledExecutorService scheduledThreadPool2	= Executors.newScheduledThreadPool(1);
 			//
-			//scheduledThreadPool2.scheduleAtFixedRate(new HttpWorkfireeye(), 0, 60,TimeUnit.SECONDS);*/
+			scheduledThreadPool2.scheduleAtFixedRate(new HttpWorkfireeye(), 0, 600,TimeUnit.SECONDS);
+		 startSocket();
+		 socketClose=false;
 			while(true){
 				try {
 					Thread.sleep(1000);

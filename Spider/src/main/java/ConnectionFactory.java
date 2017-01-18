@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class ConnectionFactory {
@@ -11,21 +12,29 @@ public class ConnectionFactory {
 	private static String dbUser="zerg";  
 	private static String dbPass="Dlut-2016sc&yz"; 
 	
+	 public static LinkedBlockingQueue<Connection> connectionPool = new LinkedBlockingQueue<Connection>(100);
 	
 	
-	
-	static{
-		try {
-			Class.forName(dbDriver);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	 static{
+			try {
+				Class.forName(dbDriver);
+				for(int i=0;i<100;i++){
+					Connection connection = DriverManager.getConnection(url, dbUser, dbPass);
+			
+					connectionPool.add(connection);
+				}
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-	}
-	
-	public static Connection getConnection() throws SQLException{
-		Connection connection = DriverManager.getConnection(url, dbUser, dbPass);
-		return connection;
-	}
+		
+		public static Connection getConnection() throws SQLException, InterruptedException{
+			return (Connection) connectionPool.take();
+		}
+		
+		public static void returnConnection(Connection connection){
+			connectionPool.add(connection);
+		}
 }
 

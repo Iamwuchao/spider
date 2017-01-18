@@ -23,7 +23,7 @@ public class ParseKA {
 		List<Kevent> list = parseKevent(events8);
 		System.out.println("size "+list.size());
 		for(Kevent event :list){
-			System.out.println("$$$ event "+event.coords[2]+" ; "+event.coords[3]);
+		//	System.out.println("$$$ event "+event.coords[2]+" ; "+event.coords[3]);
 		}
 	}
 	
@@ -105,14 +105,14 @@ public class ParseKA {
 			long tem=0;
 			for(int j=0;j<4;j++)
 			{
-				long a = 0xff&bytearray[i];
+				long a = 0xFFFF&bytearray[i];
 				//System.out.println("$$$$$$$ "+a);
-				tem = tem*256 + a;
+				tem = tem<<8 + a;
 			//	System.out.println("%%%%%% "+tem);
 				i++;
 			}
-			
-			//System.out.println("%%%%%% "+tem);
+			if(index<7)
+			System.out.println("%%%%%% "+tem);
 				
 			longarray[index++]=tem;
 		}

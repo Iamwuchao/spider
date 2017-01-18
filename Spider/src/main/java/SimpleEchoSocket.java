@@ -51,7 +51,8 @@ public class SimpleEchoSocket implements WebSocketListener{
 				try {
 					times++;
 					this.session.getRemote().sendString("#2");
-					if(times>20){
+					if(times>10){
+						times=0;
 						this.session.close();
 					}
 				//	System.out.println("send #2");
