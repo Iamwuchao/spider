@@ -11,6 +11,7 @@ import org.eclipse.jetty.websocket.api.WebSocketListener;
 
 public class SimpleEchoSocket implements WebSocketListener{
 	Session session;
+	private volatile int times=0;
 	public void onWebSocketBinary(byte[] arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
 		
@@ -45,10 +46,14 @@ public class SimpleEchoSocket implements WebSocketListener{
 
 	public void onWebSocketText(String arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("### message  : "+arg0);
+	System.out.println("### message  : "+arg0);
 		if(arg0.equals("#1")){
 				try {
+					times++;
 					this.session.getRemote().sendString("#2");
+					if(times>20){
+						this.session.close();
+					}
 				//	System.out.println("send #2");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -60,7 +65,7 @@ public class SimpleEchoSocket implements WebSocketListener{
 			String message2 = "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"global\"},\"cid\":2}";
 			try {
 				session.getRemote().sendString(message2);
-			System.out.println(message2);
+		//	System.out.println(message2);
 			
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -70,7 +75,7 @@ public class SimpleEchoSocket implements WebSocketListener{
 			Data data = new Data();
 			data.data = arg0;
 			data.time =  new Timestamp(System.currentTimeMillis());
-			DBServer.save("data_basic_nor", data);
+			DBServer.save1("data_basic_nor", data);
 		}
 		
 	}

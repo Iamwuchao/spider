@@ -4,11 +4,17 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class DBServer {
-	private static ScheduledExecutorService scheduledThreadPool1	= Executors.newScheduledThreadPool(5);
+	private static ScheduledExecutorService scheduledThreadPool1	= Executors.newScheduledThreadPool(20);
+	
+	private static ScheduledExecutorService scheduledThreadPool2	= Executors.newScheduledThreadPool(10);
+	private static AtomicInteger queueSize = new AtomicInteger(0);
+	
 	private static void mysave(String tableName,Data data){
+		long start = System.currentTimeMillis();
 		String sql = "insert into "+tableName+" "+"(`data`,`time`)"+" "+"values"+" "+"(?,?)";
 		try(Connection connection  = ConnectionFactory.getConnection()) {
 			
@@ -22,14 +28,24 @@ public class DBServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		long end = System.currentTimeMillis();
+		System.out.println("usedTime "+(end - data.time.getTime()));
+		System.out.println("times "+(end-start));
+		System.out.println(" size "+queueSize.get());
+		queueSize.decrementAndGet();
 		
 		
 	}
 	
-	public static void save(String tableName,Data data){
+	public static void save1(String tableName,Data data){
 		DBWork work = new DBWork(tableName,data);
+		queueSize.addAndGet(1);
 		scheduledThreadPool1.execute(work);
+	}
+	
+	public static void save2(String tableName,Data data){
+		DBWork work = new DBWork(tableName,data);
+		scheduledThreadPool2.execute(work);
 	}
 	
 	static class DBWork implements Runnable{
@@ -46,6 +62,7 @@ public class DBServer {
 		public void run() {
 			// TODO Auto-generated method stub
 			DBServer.mysave(tableName, data);
+			
 		}
 		
 	}
